@@ -9,8 +9,7 @@ import {
 import {
   HealthProfessionalAlreadyExistsError,
   HealthProfessionalEntity,
-  Schedule,
-  TimeRange,
+  Schedule
 } from '../../../domain';
 import { CreateHealthProfessionalCommand } from './create-health-professional.command';
 
@@ -38,10 +37,9 @@ export class CreateHealthProfessionalService implements ICommandHandler {
       timezone: command.timezone,
     });
 
+    // console.log(hp);
+
     try {
-      // TODO transaction ??
-      /* Wrapping operation in a transaction to make sure
-         that all domain events are processed atomically */
       await this.healthProfessionalRepository.insert(hp);
 
       return Ok(hp.id);

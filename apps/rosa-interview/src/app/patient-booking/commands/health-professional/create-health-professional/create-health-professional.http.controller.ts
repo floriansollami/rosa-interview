@@ -17,7 +17,7 @@ import { HealthProfessionalAlreadyExistsError } from '../../../domain';
 import { CreateHealthProfessionalCommand } from './create-health-professional.command';
 import { CreateHealthProfessionalRequestDto } from './create-health-professional.request.dto';
 
-@Controller('health-professional') // TODO aux pluriel ?
+@Controller('health-professionals')
 export class CreateHealthProfessionalController {
   constructor(private readonly commandBus: CommandBus) {}
 

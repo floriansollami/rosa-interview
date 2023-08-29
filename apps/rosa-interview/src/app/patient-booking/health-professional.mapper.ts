@@ -28,7 +28,7 @@ export class HealthProfessionalMapper
     const copy = entity.getProps();
 
     // TODO problem due to props
-    const schedule: any = copy.schedule.unpack();
+    const schedule: any = copy.schedule;
 
     return {
       _id: copy.id,
@@ -36,12 +36,12 @@ export class HealthProfessionalMapper
       firstName: copy.firstName,
       lastName: copy.lastName,
       schedule: {
-        weekDays: schedule.weekDays,
+        weekDays: schedule.props.weekDays,
         timeRange: {
-          end: schedule.timeRange.end,
-          start: schedule.timeRange.start,
+          end: schedule.props.timeRange.end.toJSDate(),
+          start: schedule.props.timeRange.start.toJSDate(),
         },
-        slotDuration: schedule.slotDuration,
+        slotDuration: schedule.props.slotDuration,
       },
       timezone: copy.timezone,
       updatedAt: copy.updatedAt,
