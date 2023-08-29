@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { InjectCollection } from '@rosa-interview/core';
+import { InjectCollection, NotFoundException } from '@rosa-interview/core';
 import * as mongo from 'mongodb';
-import { Ok, Result } from 'oxide.ts';
+import { Err, Ok, Result } from 'oxide.ts';
 import { HealthProfessionalScheduleModel } from '../../../database/health-professional-schedule';
 import { FindHealthProfessionalScheduleAvailabilitiesQuery } from './find-health-professional-schedule-availabilities.query';
 
@@ -58,6 +58,10 @@ export class FindHealthProfessionalScheduleAvailabilitiesQueryHandler
         pipeline
       )
       .toArray();
+
+    if (!document) {
+      return Err(new NotFoundException());
+    }
 
     return Ok(
       document.availabilities.map((av) => ({

@@ -1,7 +1,15 @@
-import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  NotFoundException as NotFoundHttpException,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Result } from 'oxide.ts';
+import { ApiErrorResponse, NotFoundException } from '@rosa-interview/core';
+import { Result, match } from 'oxide.ts';
 import { HealthProfessionalScheduleModel } from '../../../database/health-professional-schedule';
 import { HealthProfessionalScheduleAvailabilitiesResponseDto } from '../../../dtos';
 import { FindHealthProfessionalScheduleAvailabilitiesQuery } from './find-health-professional-schedule-availabilities.query';
@@ -21,6 +29,11 @@ export class FindHealthProfessionalScheduleAvailabilitiesHttpController {
     status: HttpStatus.OK,
     type: HealthProfessionalScheduleAvailabilitiesResponseDto,
   })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: NotFoundException.message,
+    type: ApiErrorResponse,
+  })
   async findHealthProfessionalScheduleAvailabilities(
     @Param('healthProfessionalId') healthProfessionalId: string,
     @Query()
@@ -36,12 +49,20 @@ export class FindHealthProfessionalScheduleAvailabilitiesHttpController {
 
     const result: Result<
       HealthProfessionalScheduleModel['availabilities'],
-      Error
+      NotFoundException
     > = await this.queryBus.execute(query);
 
     // Whitelisting returned properties
-    return new HealthProfessionalScheduleAvailabilitiesResponseDto({
-      availabilities: result.unwrap(),
+    return match(result, {
+      Ok: (availabilities: HealthProfessionalScheduleModel['availabilities']) =>
+        new HealthProfessionalScheduleAvailabilitiesResponseDto({
+          availabilities,
+        }),
+      Err: (error: Error) => {
+        if (error instanceof NotFoundException)
+          throw new NotFoundHttpException(error.message);
+        throw error;
+      },
     });
   }
 }
