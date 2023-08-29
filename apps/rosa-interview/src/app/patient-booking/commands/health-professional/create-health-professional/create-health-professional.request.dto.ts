@@ -7,43 +7,14 @@ import {
   IsIn,
   IsString,
   Matches,
-  ValidateNested
+  ValidateNested,
 } from 'class-validator';
 
-// export class CreateHealthProfessionalRequestDto {
-//   @ApiProperty({
-//     example: 'john@gmail.com',
-//     description: 'User email address',
-//   })
-//   @MaxLength(320)
-//   @MinLength(5)
-//   @IsEmail()
-//   readonly email: string;
-
-//   @ApiProperty({ example: 'France', description: 'Country of residence' })
-//   @MaxLength(50)
-//   @MinLength(4)
-//   @IsString()
-//   @Matches(/^[a-zA-Z ]*$/)
-//   readonly country: string;
-
-//   @ApiProperty({ example: '28566', description: 'Postal code' })
-//   @MaxLength(10)
-//   @MinLength(4)
-//   @IsAlphanumeric()
-//   readonly postalCode: string;
-
-//   @ApiProperty({ example: 'Grande Rue', description: 'Street' })
-//   @MaxLength(50)
-//   @MinLength(5)
-//   @Matches(/^[a-zA-Z ]*$/)
-//   readonly street: string;
-// }
-
-///////
-
 export class CreateHealthProfessionalScheduleTimeRangeDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'End time of the schedule in HH:mm format',
+    example: '17:30',
+  })
   @IsDefined()
   @IsString()
   @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
@@ -51,7 +22,10 @@ export class CreateHealthProfessionalScheduleTimeRangeDto {
   })
   readonly end!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Start time of the schedule in HH:mm format',
+    example: '09:00',
+  })
   @IsDefined()
   @IsString()
   @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
@@ -61,19 +35,31 @@ export class CreateHealthProfessionalScheduleTimeRangeDto {
 }
 
 export class CreateHealthProfessionalScheduleDto {
-  @ApiProperty({ type: 'number', isArray: true })
+  @ApiProperty({
+    description:
+      'Array of weekdays represented as numbers (1 for Monday, 7 for Sunday)',
+    type: 'number',
+    isArray: true,
+    example: [1, 2, 3],
+  })
   @IsDefined()
   @IsArray()
   @IsIn([1, 2, 3, 4, 5, 6, 7], { each: true })
   readonly weekDays!: number[];
 
-  @ApiProperty({ type: () => CreateHealthProfessionalScheduleTimeRangeDto })
+  @ApiProperty({
+    description: 'Time range for the schedule',
+    type: () => CreateHealthProfessionalScheduleTimeRangeDto,
+  })
   @IsDefined()
   @ValidateNested()
   @Type(() => CreateHealthProfessionalScheduleTimeRangeDto)
   readonly timeRange!: CreateHealthProfessionalScheduleTimeRangeDto;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Duration of each slot in ISO 8601 duration format',
+    example: 'PT30M',
+  })
   @IsDefined()
   @IsString()
   @IsISO8601Duration()
@@ -81,23 +67,35 @@ export class CreateHealthProfessionalScheduleDto {
 }
 
 export class CreateHealthProfessionalRequestDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'First name of the health professional',
+    example: 'John',
+  })
   @IsDefined()
   @IsString()
   readonly firstName!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Last name of the health professional',
+    example: 'Doe',
+  })
   @IsDefined()
   @IsString()
   readonly lastName!: string;
 
-  @ApiProperty({ type: () => CreateHealthProfessionalScheduleDto })
+  @ApiProperty({
+    description: 'Schedule details for the health professional',
+    type: () => CreateHealthProfessionalScheduleDto,
+  })
   @IsDefined()
   @ValidateNested()
   @Type(() => CreateHealthProfessionalScheduleDto)
   readonly schedule!: CreateHealthProfessionalScheduleDto;
 
-  @ApiProperty({ example: 'Europe/Brussels', description: 'IANA valid zone' })
+  @ApiProperty({
+    description: 'IANA time zone for the health professional',
+    example: 'Europe/Brussels',
+  })
   @IsDefined()
   @IsString()
   @IsTimezone()
