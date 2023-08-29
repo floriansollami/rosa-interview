@@ -18,6 +18,7 @@ import {
   FindHealthProfessionalScheduleAvailabilitiesHttpController,
   FindHealthProfessionalScheduleAvailabilitiesQueryHandler,
   FindHealthProfessionalScheduleFirstAvailabilityHttpController,
+  FindHealthProfessionalScheduleFirstAvailabilityQueryHandler,
 } from './queries';
 
 const httpControllers = [
@@ -31,6 +32,7 @@ const commandHandlers: Provider[] = [
 ];
 const queryHandlers: Provider[] = [
   FindHealthProfessionalScheduleAvailabilitiesQueryHandler,
+  FindHealthProfessionalScheduleFirstAvailabilityQueryHandler,
 ];
 const mappers: Provider[] = [
   HealthProfessionalMapper,
