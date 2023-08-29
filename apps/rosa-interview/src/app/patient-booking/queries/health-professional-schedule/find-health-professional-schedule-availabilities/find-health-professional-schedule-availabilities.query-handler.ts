@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectCollection, NotFoundException } from '@rosa-interview/core';
 import * as mongo from 'mongodb';
 import { Err, Ok, Result } from 'oxide.ts';
-import { HealthProfessionalScheduleModel } from '../../../database/health-professional-schedule';
+import { HealthProfessionalScheduleModel } from '../../../database';
 import { FindHealthProfessionalScheduleAvailabilitiesQuery } from './find-health-professional-schedule-availabilities.query';
 
 @QueryHandler(FindHealthProfessionalScheduleAvailabilitiesQuery)

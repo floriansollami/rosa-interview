@@ -6,10 +6,6 @@ export interface AvailabilityProps {
 }
 
 export class Availability extends ValueObject<AvailabilityProps> {
-  // get country(): string {
-  //   return this.props.country;
-  // }
-
   /**
    * Note: This is a very simplified example of validation,
    * real world projects will have stricter rules.

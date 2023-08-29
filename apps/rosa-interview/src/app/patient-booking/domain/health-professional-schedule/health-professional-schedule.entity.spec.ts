@@ -4,37 +4,9 @@ import { HealthProfessionalEntity } from '../health-professional/health-professi
 import { Schedule } from '../health-professional/value-objects';
 import { HealthProfessionalScheduleEntity } from './health-professional-schedule.entity';
 import { Availability, ScheduledEvent } from './value-objects';
-import { HealthProfessionalScheduleModel } from '../../database';
-
-function toPersistence(
-  entity: HealthProfessionalScheduleEntity
-): any {
-  const copy = entity.getProps();
-
-  return {
-    _id: copy.id,
-    availabilities: copy.availabilities.map((av: any) => ({
-      endTime: av.props.endTime.toJSDate(),
-      startTime: av.props.startTime.toJSDate(),
-    })),
-    createdAt: copy.createdAt,
-    endDate: copy.period.end.toJSDate(),
-    healthProfessionalId: copy.healthProfessionalId,
-    scheduledEvents: Array.from(copy.scheduledEvents.values()).map((se: any) => ({
-      endTime: se.props.period.start.toJSDate(),
-      patientId: se.props.patientId,
-      startTime: se.props.period.end.toJSDate(),
-      status: se.props.status,
-    })),
-    startDate: copy.period.start.toJSDate(),
-    timezone: copy.timezone,
-    updatedAt: copy.updatedAt,
-  };
-}
 
 describe('HealthProfessionalScheduleEntity', () => {
   it('should generate availabilities correctly', () => {
-
     // Arrange
     const hp = new HealthProfessionalEntity({
       id: '123',
@@ -96,8 +68,6 @@ describe('HealthProfessionalScheduleEntity', () => {
 
     // Act
     hps.generateAvailabilities(hp);
-
-    console.log(toPersistence(hps));
 
     // Assert
     const result = hps.getProps().availabilities;

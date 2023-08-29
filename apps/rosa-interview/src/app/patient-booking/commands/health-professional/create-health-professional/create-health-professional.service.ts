@@ -9,7 +9,7 @@ import {
 import {
   HealthProfessionalAlreadyExistsError,
   HealthProfessionalEntity,
-  Schedule
+  Schedule,
 } from '../../../domain';
 import { CreateHealthProfessionalCommand } from './create-health-professional.command';
 
@@ -36,8 +36,6 @@ export class CreateHealthProfessionalService implements ICommandHandler {
       }),
       timezone: command.timezone,
     });
-
-    // console.log(hp);
 
     try {
       await this.healthProfessionalRepository.insert(hp);

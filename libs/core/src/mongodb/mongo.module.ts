@@ -34,8 +34,6 @@ export class MongoModule implements OnApplicationShutdown {
     };
     const papr = new Papr();
 
-    console.log(papr);
-
     const clientProvider = {
       provide: getClientToken(),
       useFactory: async (coreModuleOptions: CoreModuleOptions) => {
@@ -95,8 +93,6 @@ export class MongoModule implements OnApplicationShutdown {
    */
   static forFeature(collections: string[] = []): ModuleMetadata {
     const providers = createMongoProviders(collections);
-
-    console.log(providers);
 
     return {
       providers: providers,

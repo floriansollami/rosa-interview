@@ -27,7 +27,7 @@ export class Schedule extends ValueObject<ScheduleProps> {
    * only on the edge of the application (in controllers when receiving
    * a request) sacrificing some security for performance and convenience.
    */
-  protected validate(props: ScheduleProps): void {
+  protected validate(_props: ScheduleProps): void {
     //   if (!Guard.lengthIsBetween(props.country, 2, 50)) {
     //     throw new ArgumentOutOfRangeException('country is out of range');
     //   }

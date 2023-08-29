@@ -72,8 +72,6 @@ export abstract class MongoRepositoryBase<
 
   convertException(exception: Error & Record<string, any>): DriverException {
     switch (exception['code']) {
-      // case 48:
-      //   return new TableExistsException(exception);
       case 11000:
         throw new ConflictException('Record already exists', exception);
     }

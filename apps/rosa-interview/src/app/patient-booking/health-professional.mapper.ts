@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Interval, Mapper } from '@rosa-interview/core';
 import { HealthProfessionalModel } from './database';
 import { HealthProfessionalEntity, Schedule } from './domain';
-import {
-  HealthProfessionalResponseDto,
-  ScheduleDto,
-  TimeRangeDto,
-} from './dtos/health-professional.response.dto';
+import { HealthProfessionalResponseDto, ScheduleDto, TimeRangeDto } from './dtos';
 
 /**
  * Mapper constructs objects that are used in different layers:

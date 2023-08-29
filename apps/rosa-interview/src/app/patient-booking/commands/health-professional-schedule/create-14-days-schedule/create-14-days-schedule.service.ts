@@ -7,8 +7,8 @@ import {
   HEALTH_PROFESSIONAL_REPOSITORY,
   HEALTH_PROFESSIONAL_SCHEDULE_REPOSITORY,
   HealthProfessionalRepositoryPort,
+  HealthProfessionalScheduleRepositoryPort,
 } from '../../../database';
-import { HealthProfessionalScheduleRepositoryPort } from '../../../database/health-professional-schedule/health-professional-schedule.repository.port';
 import {
   HealthProfessionalScheduleEntity,
   ScheduledEvent,
@@ -24,20 +24,13 @@ export class Create14DaysScheduleService implements ICommandHandler {
     protected readonly healthProfessionalScheduleRepository: HealthProfessionalScheduleRepositoryPort
   ) {}
 
-  //
-  // un cron va creer un schedule de 15 jours, le jour avant la fin des 14 jours a partir du schedule du docteur
-  // quand on cree le schedule, on calcule les availabilities initiales a partir du schedule du docteur
-  // je pars du principe que le docteur n'ajoute pas des evenements dans un quinzaine en cours!
-
-  // faire un autre use case book an evenement, ce qui va adapter les availabilities
-  // et en O(1) grace a une cle de hachage je saurais a quel index je dois l'ajouter
-  //
-
   /**
    * Let's suppose, non-appointment events of the health professional come from an external system (his calendar ?).
    *
-   * @param command
-   * @returns
+   * This method will create a new schedule for a health professional for a period of 14 days and calculate
+   * the availabilities.
+   *
+   * Of course, we will have to add a command to book an event and update the availabilities (in O(1) if possible).
    */
   async execute(
     command: Create14DaysScheduleCommand

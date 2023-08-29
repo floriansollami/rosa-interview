@@ -2,7 +2,7 @@ import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Result } from 'oxide.ts';
-import { HealthProfessionalScheduleModel } from '../../../database/health-professional-schedule';
+import { HealthProfessionalScheduleModel } from '../../../database';
 import { HealthProfessionalScheduleAvailabilityResponseDto } from '../../../dtos';
 import { FindHealthProfessionalScheduleFirstAvailabilityQuery } from './find-health-professional-schedule-first-availability.query';
 import { FindHealthProfessionalScheduleFirstAvailabilityQueryRequestDto } from './find-health-professional-schedule-first-availability.request.dto';

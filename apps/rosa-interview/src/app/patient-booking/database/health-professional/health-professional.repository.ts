@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectPapr, MongoRepositoryBase } from '@rosa-interview/core';
 import Papr, { schema, types } from 'papr';
-import { HealthProfessionalRepositoryPort } from './health-professional.repository.port';
 import { HealthProfessionalEntity } from '../../domain';
 import { HealthProfessionalMapper } from '../../health-professional.mapper';
+import { HealthProfessionalRepositoryPort } from './health-professional.repository.port';
 
 export const HEALTH_PROFESSIONAL_REPOSITORY = Symbol(
   'HEALTH_PROFESSIONAL_REPOSITORY'

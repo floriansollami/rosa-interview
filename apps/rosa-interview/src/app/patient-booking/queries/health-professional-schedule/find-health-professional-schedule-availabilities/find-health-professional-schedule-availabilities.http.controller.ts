@@ -10,7 +10,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ApiErrorResponse, NotFoundException } from '@rosa-interview/core';
 import { Result, match } from 'oxide.ts';
-import { HealthProfessionalScheduleModel } from '../../../database/health-professional-schedule';
+import { HealthProfessionalScheduleModel } from '../../../database';
 import { HealthProfessionalScheduleAvailabilitiesResponseDto } from '../../../dtos';
 import { FindHealthProfessionalScheduleAvailabilitiesQuery } from './find-health-professional-schedule-availabilities.query';
 import { FindHealthProfessionalScheduleAvailabilitiesQueryRequestDto } from './find-health-professional-schedule-availabilities.request.dto';
