@@ -1,0 +1,64 @@
+{
+  "name": "rosa-interview",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/rosa-interview/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/rosa-interview",
+        "main": "apps/rosa-interview/src/main.ts",
+        "tsConfig": "apps/rosa-interview/tsconfig.app.json",
+        "assets": ["apps/rosa-interview/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/rosa-interview/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "rosa-interview:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "rosa-interview:build:development"
+        },
+        "production": {
+          "buildTarget": "rosa-interview:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/rosa-interview/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/rosa-interview/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
