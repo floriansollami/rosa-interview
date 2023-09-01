@@ -17,7 +17,7 @@ describe('HealthProfessionalScheduleEntity', () => {
         lastName: 'Misselis',
         schedule: new Schedule({
           weekDays: [1, 2], // Monday, Tuesday
-          timeRange: Interval.parse(
+          timeRange: Interval.parseFromJSDate(
             new Date('2000-01-01T09:30:00.000Z'),
             new Date('2000-01-01T20:00:00.000Z')
           ),
@@ -44,7 +44,7 @@ describe('HealthProfessionalScheduleEntity', () => {
 
     const hps = HealthProfessionalScheduleEntity.createWithoutAvailabilities({
       healthProfessionalId: hp.id,
-      period: Interval.parse(
+      period: Interval.parseFromJSDate(
         new Date('2023-08-28T00:00:00.000Z'),
         new Date('2023-08-29T00:00:00.000Z')
       ),
@@ -54,7 +54,7 @@ describe('HealthProfessionalScheduleEntity', () => {
             map.set(
               new Date(event.startTime),
               ScheduledEvent.createFromPartialProps({
-                period: Interval.parse(
+                period: Interval.parseFromJSDate(
                   new Date(event.startTime),
                   new Date(event.endTime)
                 ),

@@ -25,8 +25,8 @@ export class DateTime {
     this.date = date;
   }
 
-  static parse(date: string): DateTime {
-    return new this(LDateTime.fromISO(date, { zone: 'UTC' }));
+  static parse(date: string, timezone = 'UTC'): DateTime {
+    return new this(LDateTime.fromISO(date, { zone: timezone }));
   }
 
   static parseFromLDateTime(date: LDateTime): DateTime {
@@ -37,19 +37,15 @@ export class DateTime {
     return new this(LDateTime.fromJSDate(date));
   }
 
-  getDate(): LDateTime {
-    return this.date.toUTC(); // always UTC
-  }
-
   /**
    * Get the day of the week. 1 is Monday and 7 is Sunday (ISO week date)
    */
   getWeekDay(): number {
-    return this.getDate().weekday;
+    return this.date.weekday;
   }
 
   getTimeUnits(): TimeUnits {
-    const date = this.getDate();
+    const date = this.date;
 
     return {
       hour: date.hour,
@@ -59,25 +55,39 @@ export class DateTime {
     };
   }
 
+  isBefore(date: DateTime): boolean {
+    return this.date.diff(date.date, 'milliseconds').milliseconds < 0;
+  }
+
   isSameOrBefore(date: DateTime): boolean {
-    return (
-      this.getDate().diff(date.getDate(), 'milliseconds').milliseconds <= 0
-    );
+    return this.date.diff(date.date, 'milliseconds').milliseconds <= 0;
   }
 
   plus(duration: Duration): DateTime {
-    return new DateTime(this.getDate().plus(duration));
+    return new DateTime(this.date.plus(duration));
   }
 
-  set(values: TimeUnits) {
-    return new DateTime(this.getDate().set(values));
+  set(values: TimeUnits): DateTime {
+    return new DateTime(this.date.set(values));
+  }
+
+  setTimeUnits(date: DateTime): DateTime {
+    return new DateTime(this.date.set(date.getTimeUnits()));
   }
 
   toJSDate(): Date {
-    return this.getDate().toJSDate();
+    return this.date.toJSDate();
   }
 
-  toISO8601String() {
-    return this.getDate().toUTC().toISO();
+  toISO8601String(): string | null {
+    return this.date.toUTC().toISO();
+  }
+
+  toTZ(timezone: string): DateTime {
+    return new DateTime(this.date.setZone(timezone));
+  }
+
+  toFormat(format = "yyyy-MM-dd'T'HH:mm:ss"): string {
+    return this.date.toFormat(format);
   }
 }

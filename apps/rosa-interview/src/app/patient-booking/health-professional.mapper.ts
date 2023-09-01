@@ -54,7 +54,7 @@ export class HealthProfessionalMapper
         lastName: record.lastName,
         schedule: new Schedule({
           weekDays: record.schedule.weekDays,
-          timeRange: Interval.parse(
+          timeRange: Interval.parseFromJSDate(
             record.schedule.timeRange.start,
             record.schedule.timeRange.end
           ),

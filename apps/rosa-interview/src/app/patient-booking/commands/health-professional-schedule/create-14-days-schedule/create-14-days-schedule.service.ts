@@ -44,31 +44,39 @@ export class Create14DaysScheduleService implements ICommandHandler {
     }
 
     const hp = found.unwrap();
-    const hps = HealthProfessionalScheduleEntity.createWithoutAvailabilities({
-      healthProfessionalId: hp.id,
-      period: Interval.parse(
-        new Date(command.startDate),
-        new Date(command.endDate)
-      ),
-      scheduledEvents: TreeMap.fromMap(
-        command.events.reduce(
-          (map, event) =>
-            map.set(
-              new Date(event.startTime),
-              ScheduledEvent.createFromPartialProps({
-                period: Interval.parse(
-                  new Date(event.startTime),
-                  new Date(event.endTime)
-                ),
-              })
-            ),
-          new Map<Date, ScheduledEvent>()
-        )
-      ),
-      timezone: hp.timezone,
-    });
+    const hps: any =
+      HealthProfessionalScheduleEntity.createWithoutAvailabilities({
+        healthProfessionalId: hp.id,
+        period: Interval.parseFromJSDate(
+          new Date(command.startDate),
+          new Date(command.endDate)
+        ),
+        scheduledEvents: TreeMap.fromMap(
+          command.events.reduce(
+            (map, event) =>
+              map.set(
+                new Date(event.startTime),
+                ScheduledEvent.createFromPartialProps({
+                  period: Interval.parseFromJSDate(
+                    new Date(event.startTime),
+                    new Date(event.endTime)
+                  ),
+                })
+              ),
+            new Map<Date, ScheduledEvent>()
+          )
+        ),
+        timezone: hp.timezone,
+      });
 
     hps.generateAvailabilities(hp);
+
+    console.log({
+      availabilities: hps.props.availabilities.map((av: any) => ({
+        endTime: av.props.endTime.toTZ().toFormat(),
+        startTime: av.props.startTime.toTZ().toFormat(),
+      })),
+    });
 
     await this.healthProfessionalScheduleRepository.insert(hps);
 

@@ -12,7 +12,7 @@ export class Interval {
     return DateTime.parseFromLDateTime(this.interval.end!);
   }
 
-  static parse(start: Date, end: Date): Interval {
+  static parseFromJSDate(start: Date, end: Date): Interval {
     const interval = LInterval.fromDateTimes(start, end);
 
     if (!interval.isValid) {
@@ -22,8 +22,8 @@ export class Interval {
     return new Interval(interval);
   }
 
-  static parseFromDateTime(start: DateTime, end: DateTime): Interval {
-    return Interval.parse(start.toJSDate(), end.toJSDate());
+  static parse(start: DateTime, end: DateTime): Interval {
+    return Interval.parseFromJSDate(start.toJSDate(), end.toJSDate());
   }
 
   lengthInDays(): number {

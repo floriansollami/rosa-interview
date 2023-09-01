@@ -28,7 +28,7 @@ export class CreateHealthProfessionalService implements ICommandHandler {
       lastName: command.lastName,
       schedule: new Schedule({
         weekDays: command.schedule.weekDays,
-        timeRange: Interval.parse(
+        timeRange: Interval.parseFromJSDate(
           new Date(`2000-01-01T${command.schedule.timeRange.start}:00`),
           new Date(`2000-01-01T${command.schedule.timeRange.end}:00`)
         ),
