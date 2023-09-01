@@ -1,11 +1,20 @@
-import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  NotFoundException as NotFoundHttpException,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Result } from 'oxide.ts';
+import { NotFoundException } from '@rosa-interview/core';
+import { Result, match } from 'oxide.ts';
 import { HealthProfessionalScheduleModel } from '../../../database';
 import { HealthProfessionalScheduleAvailabilityResponseDto } from '../../../dtos';
 import { FindHealthProfessionalScheduleFirstAvailabilityQuery } from './find-health-professional-schedule-first-availability.query';
 import { FindHealthProfessionalScheduleFirstAvailabilityQueryRequestDto } from './find-health-professional-schedule-first-availability.request.dto';
+import { Availability } from '../../../domain';
 
 // One controller per use case is considered a good practice
 @Controller('health-professionals')
@@ -37,9 +46,19 @@ export class FindHealthProfessionalScheduleFirstAvailabilityHttpController {
     > = await this.queryBus.execute(query);
 
     // Whitelisting returned properties
-    return new HealthProfessionalScheduleAvailabilityResponseDto({
-      endTime: result.unwrap().endTime,
-      startTime: result.unwrap().startTime,
+    return match(result, {
+      Ok: (
+        availability: HealthProfessionalScheduleModel['availabilities'][0]
+      ) =>
+        new HealthProfessionalScheduleAvailabilityResponseDto({
+          endTime: availability.endTime,
+          startTime: availability.startTime,
+        }),
+      Err: (error: Error) => {
+        if (error instanceof NotFoundException)
+          throw new NotFoundHttpException(error.message);
+        throw error;
+      },
     });
   }
 }

@@ -31,10 +31,12 @@ export class FindHealthProfessionalScheduleAvailabilitiesQueryHandler
       {
         $match: {
           healthProfessionalId,
-          startDate: { $lte: new Date(from) },
-          endDate: { $gte: new Date(to) },
+          startDate: { $lte: new Date(to) }, // startDate <= to ou to >= startDate
+          endDate: { $gt: new Date(from) }, // endDate > from ou from < endDate
         },
       },
+      // unwinding the availabilities array to turn each subdocument into a separate document
+      // une av par document
       { $unwind: '$availabilities' },
       {
         $match: {
@@ -42,7 +44,10 @@ export class FindHealthProfessionalScheduleAvailabilitiesQueryHandler
             $gte: new Date(from),
             $lt: new Date(to),
           },
-          'availabilities.endTime': { $gt: new Date(from), $lte: new Date(to) },
+          'availabilities.endTime': {
+            $gte: new Date(from),
+            $lt: new Date(to),
+          },
         },
       },
       {

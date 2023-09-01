@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { InjectCollection } from '@rosa-interview/core';
+import { InjectCollection, NotFoundException } from '@rosa-interview/core';
 import * as mongo from 'mongodb';
-import { Ok, Result } from 'oxide.ts';
+import { Err, Ok, Result } from 'oxide.ts';
 import { HealthProfessionalScheduleModel } from '../../../database';
 import { FindHealthProfessionalScheduleFirstAvailabilityQuery } from './find-health-professional-schedule-first-availability.query';
 
@@ -33,35 +33,35 @@ export class FindHealthProfessionalScheduleFirstAvailabilityQueryHandler
       {
         $match: {
           healthProfessionalId,
-          startDate: { $gte: new Date(from) },
+          startDate: { $lte: new Date(from) }, // from >= startDate
+          endDate: { $gt: new Date(from) }, // from < endDate
         },
       },
       { $unwind: '$availabilities' },
       {
         $match: {
-          'availabilities.startTime': { $gte: new Date(from) },
+          'availabilities.startTime': { $gt: new Date(from) },
         },
       },
       {
-        $limit: 1,
+        $sort: { 'availabilities.startTime': 1 },
       },
       {
-        $group: {
-          _id: '$healthProfessionalId',
-          availabilities: { $push: '$availabilities' },
-        },
+        $limit: 1, // return one doc
       },
     ];
 
     const [document] = await this.healthProfessionalScheduleCollection
-      .aggregate<Pick<HealthProfessionalScheduleModel, 'availabilities'>>(
-        pipeline
-      )
+      .aggregate<any>(pipeline)
       .toArray();
 
+    if (!document) {
+      return Err(new NotFoundException());
+    }
+
     return Ok({
-      endTime: document.availabilities[0].endTime,
-      startTime: document.availabilities[0].startTime,
+      endTime: document.availabilities.endTime,
+      startTime: document.availabilities.startTime,
     });
   }
 }
