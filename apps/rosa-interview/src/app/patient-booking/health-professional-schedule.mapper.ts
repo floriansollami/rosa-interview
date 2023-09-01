@@ -66,7 +66,7 @@ export class HealthProfessionalScheduleMapper
             })
         ),
         healthProfessionalId: record.healthProfessionalId,
-        period: Interval.parse(record.startDate, record.endDate),
+        period: Interval.parseFromJSDate(record.startDate, record.endDate),
         scheduledEvents: TreeMap.fromMap(
           record.scheduledEvents.reduce(
             (map, event) =>
@@ -74,7 +74,7 @@ export class HealthProfessionalScheduleMapper
                 event.startTime,
                 new ScheduledEvent({
                   patientId: event.patientId,
-                  period: Interval.parse(event.startTime, event.endTime),
+                  period: Interval.parseFromJSDate(event.startTime, event.endTime),
                   status: event.status,
                 })
               ),
