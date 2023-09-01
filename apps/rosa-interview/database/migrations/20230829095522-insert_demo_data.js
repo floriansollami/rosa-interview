@@ -25,22 +25,38 @@ module.exports = {
       _id: "42d41ce6-79ad-47b3-9f45-df6211de56fd",
       availabilities: [
         {
-          // 2023-08-28T12:00:00 local time in Brussels
-          endTime: new Date("2023-08-28T10:00:00.000+0000"),
-          // 2023-08-28T09:30:00 local time in Brussels
-          startTime: new Date("2023-08-28T07:30:00.000+0000")
+          // 2023-08-14T12:00:00 local time in Brussels
+          endTime: new Date('2023-08-14T10:00:00.000Z'),
+          // 2023-08-14T09:30:00 local time in Brussels
+          startTime: new Date('2023-08-14T07:30:00.000Z'),
         },
+
         {
-          // 2023-08-28T20:00:00 local time in Brussels
-          endTime: new Date("2023-08-28T18:00:00.000+0000"),
-          // 2023-08-28T14:00:00 local time in Brussels
-          startTime: new Date("2023-08-28T14:00:00.000+0000")
+          // 2023-08-14T20:00:00 local time in Brussels
+          endTime: new Date('2023-08-14T18:00:00.000Z'),
+          // 2023-08-14T16:00:00 local time in Brussels
+          startTime: new Date('2023-08-14T14:00:00.000Z'),
         },
+
         {
-          // 2023-08-29T18:00:00 local time in Brussels
-          endTime: new Date("2023-08-29T16:00:00.000+0000"),
-          // 2023-08-29T11:00:00 local time in Brussels
-          startTime: new Date("2023-08-29T09:00:00.000+0000")
+          // 2023-08-15T18:00:00 local time in Brussels
+          endTime: new Date('2023-08-15T16:00:00.000Z'),
+          // 2023-08-15T11:00:00 local time in Brussels
+          startTime: new Date('2023-08-15T09:00:00.000Z'),
+        },
+
+        {
+          // 2023-08-21T20:00:00 local time in Brussels
+          endTime: new Date('2023-08-21T18:00:00.000Z'),
+          // 2023-08-21T09:30:00 local time in Brussels
+          startTime: new Date('2023-08-21T07:30:00.000Z'),
+        },
+
+        {
+          // 2023-08-21T20:00:00 local time in Brussels
+          endTime: new Date('2023-08-22T18:00:00.000Z'),
+          // 2023-08-21T09:30:00 local time in Brussels
+          startTime: new Date('2023-08-22T07:30:00.000Z'),
         }
       ],
       createdAt: new Date("2023-08-28T20:32:20.996Z"),
@@ -82,7 +98,7 @@ module.exports = {
       // means actually [2023-08-28T00:00:00, 2023-08-28T23:59:59.599999] = 14 day duration
 
       startDate: new Date("2023-08-13T22:00:00.000Z"),
-      endDate: new Date("2023-08-27T22:00:00.000Z"),
+      endDate: new Date("2023-08-27T22:00:00.000Z"), // not included
       timezone: "Europe/Brussels",
       updatedAt: new Date("2023-08-28T20:32:20.996Z")
     };
